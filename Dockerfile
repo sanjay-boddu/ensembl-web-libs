@@ -7,6 +7,7 @@ LABEL maintainer="sboddu@ebi.ac.uk"
 
 RUN yum update -y \
   && yum install -y bzip2 curl file gcc gcc-c++ git make ruby patch sudo which wget openssh \
+  && yum groupinstall 'Development Tools' -y \
   && yum clean all
 
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8 \
