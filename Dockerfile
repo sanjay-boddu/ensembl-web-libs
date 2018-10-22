@@ -44,7 +44,7 @@ WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}
 
 RUN git clone https://github.com/Ensembl/linuxbrew-automation.git
 WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
-RUN git checkout docker && /bin/bash -c "source 01-base.sh"
+RUN git checkout docker && /bin/bash -c "time source 01-base.sh"
 #######################
 
 
