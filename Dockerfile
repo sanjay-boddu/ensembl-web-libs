@@ -33,13 +33,20 @@ RUN mkdir -p ${WEBCODE_LOCATION} ${WEB_SOFTWARE_DEPENDENCIES_LOCATION} ${WEB_TMP
 
 WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}
 
-RUN wget https://github.com/Ensembl/linuxbrew-automation/archive/1.0.0.tar.gz \
-    && tar -xvzf 1.0.0.tar.gz
 
+#######################
 
+#RUN wget https://github.com/Ensembl/linuxbrew-automation/archive/1.0.0.tar.gz \
+#    && tar -xvzf 1.0.0.tar.gz
 
-WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation-1.0.0
+#WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation-1.0.0
 
-#RUN source initiate.sh
+RUN git clone https://github.com/Ensembl/linuxbrew-automation.git
+WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
+RUN git checkout docker
+
+#######################
+
+RUN time source 01-base.sh
 
 CMD ["/bin/bash"] 
