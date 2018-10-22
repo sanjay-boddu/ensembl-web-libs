@@ -27,7 +27,8 @@ ENV WEBCODE_LOCATION=${PROJECT_ROOT}/ensweb/ \
     WEB_SOFTWARE_DEPENDENCIES_LOCATION=${PROJECT_ROOT}/ensweb-software/ \
     WEB_TMP_DIR=${PROJECT_ROOT}/ensweb-tmp/ \
     HOMEBREW_NO_ANALYTICS=1 \
-    HOMEBREW_NO_AUTO_UPDATE=1
+    HOMEBREW_NO_AUTO_UPDATE=1 \
+    DISABLE_USER_INPUT_PROMPTS=1
 
 RUN mkdir -p ${WEBCODE_LOCATION} ${WEB_SOFTWARE_DEPENDENCIES_LOCATION} ${WEB_TMP_DIR}
 
@@ -43,10 +44,8 @@ WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}
 
 RUN git clone https://github.com/Ensembl/linuxbrew-automation.git
 WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
-RUN git checkout docker
-
+RUN git checkout docker && /bin/bash -c "source 01-base.sh"
 #######################
 
-RUN time source 01-base.sh
 
 CMD ["/bin/bash"] 
