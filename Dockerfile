@@ -11,28 +11,31 @@ RUN yum update -y \
   && yum clean all
 
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8 \
-	&& useradd -m -s /bin/bash ens_adm \
-	&& echo 'ens_adm ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
+	&& useradd -m -s /bin/bash www \
+	&& echo 'www ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
 
-USER ens_adm
+ARG PROJECT_ROOT=/ebi/
 
+# Unlike other locations, ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION should be set to "/home/linuxbrew". This is a requirement for brew to install packages from bottles rather than falling back to installing from source for a few packages.
+# For more info, see: https://github.com/Linuxbrew/brew/wiki/FAQ
 
-ARG PROJECT_ROOT=/home/ens_adm
-
-
-WORKDIR ${PROJECT_ROOT}
-
-ENV WEBCODE_LOCATION=${PROJECT_ROOT}/ensweb/ \
-    WEB_SOFTWARE_DEPENDENCIES_LOCATION=${PROJECT_ROOT}/ensweb-software/ \
-    WEB_TMP_DIR=${PROJECT_ROOT}/ensweb-tmp/ \
+ENV ENSEMBL_WEBCODE_LOCATION=${PROJECT_ROOT}/ensweb/ \
+    ENSEMBL_TMP_DIR_LOCATION=${PROJECT_ROOT}/nobackup/ \
+    ENSEMBL_USERDATA_LOCATION=${PROJECT_ROOT}/incoming/ \
+    ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION=/home/linuxbrew \
     HOMEBREW_NO_ANALYTICS=1 \
     HOMEBREW_NO_AUTO_UPDATE=1 \
     DISABLE_USER_INPUT_PROMPTS=1
 
-RUN mkdir -p ${WEBCODE_LOCATION} ${WEB_SOFTWARE_DEPENDENCIES_LOCATION} ${WEB_TMP_DIR}
 
-WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}
+RUN sudo mkdir -p ${ENSEMBL_WEBCODE_LOCATION} ${ENSEMBL_TMP_DIR_LOCATION} ${ENSEMBL_USERDATA_LOCATION} ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION} \
+    && sudo chmod 777 ${ENSEMBL_WEBCODE_LOCATION}  ${ENSEMBL_TMP_DIR_LOCATION} ${ENSEMBL_USERDATA_LOCATION} ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION}
+
+
+USER www
+
+WORKDIR ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION}
 
 
 #######################
@@ -43,8 +46,8 @@ WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}
 #WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation-1.0.0
 
 RUN git clone https://github.com/Ensembl/linuxbrew-automation.git
-WORKDIR ${WEB_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
-RUN git checkout docker && /bin/bash -c "time source 01-base.sh"
+WORKDIR ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
+#RUN git checkout docker && /bin/bash -c "time source 01-base.sh $ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION"
 #######################
 
 
