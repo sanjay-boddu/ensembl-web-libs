@@ -20,13 +20,15 @@ ARG PROJECT_ROOT=/ebi/
 # Unlike other locations, ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION should be set to "/home/linuxbrew". This is a requirement for brew to install packages from bottles rather than falling back to installing from source for a few packages.
 # For more info, see: https://github.com/Linuxbrew/brew/wiki/FAQ
 
+# IS_A_DOCKER_INSTALL is to disable user input prompts while installing the libraries
+
 ENV ENSEMBL_WEBCODE_LOCATION=${PROJECT_ROOT}/ensweb/ \
     ENSEMBL_TMP_DIR_LOCATION=${PROJECT_ROOT}/nobackup/ \
     ENSEMBL_USERDATA_LOCATION=${PROJECT_ROOT}/incoming/ \
     ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION=/home/linuxbrew \
     HOMEBREW_NO_ANALYTICS=1 \
     HOMEBREW_NO_AUTO_UPDATE=1 \
-    ENSEMBL_DISABLE_USER_INPUT_PROMPTS=1
+    IS_A_DOCKER_INSTALL=1
 
 
 RUN sudo mkdir -p ${ENSEMBL_WEBCODE_LOCATION} ${ENSEMBL_TMP_DIR_LOCATION} ${ENSEMBL_USERDATA_LOCATION} ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION} \
