@@ -54,7 +54,7 @@ RUN git checkout docker \
 #   Temp Start
     && source ${HOME}/.bashrc \
     && /bin/bash -c "time brew install ensembl/external/emboss" \
-    && /bin/bash -c "time brew install ensembl/ensembl/hal" \
+    && /bin/bash -c "time brew install ensembl/ensembl/hdf5@1.8" \
 #   Temp End
     && rm ${HOME}/.cache/Homebrew/downloads/* 
 #######################
