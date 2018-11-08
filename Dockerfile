@@ -51,11 +51,6 @@ RUN git clone https://github.com/Ensembl/linuxbrew-automation.git
 WORKDIR ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
 RUN git checkout docker \ 
     && /bin/bash -c "time source 01-base-libraries.sh $ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION" \
-#   Temp Start
-    && source ${HOME}/.bashrc \
-    && /bin/bash -c "time brew install ensembl/external/emboss" \
-    && /bin/bash -c "time brew install ensembl/ensembl/hdf5@1.8" \
-#   Temp End
     && rm ${HOME}/.cache/Homebrew/downloads/* 
 #######################
 
