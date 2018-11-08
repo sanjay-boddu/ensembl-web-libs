@@ -51,7 +51,7 @@ RUN git clone https://github.com/Ensembl/linuxbrew-automation.git
 WORKDIR ${ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION}/linuxbrew-automation
 RUN git checkout docker \ 
     && /bin/bash -c "time source 01-base-libraries.sh $ENSEMBL_SOFTWARE_DEPENDENCIES_LOCATION" \
-    && rm ${HOME}/.cache/Homebrew/downloads/* 
+    && rm -r ${HOME}/.cache/Homebrew/downloads/* 
 #######################
 
 
